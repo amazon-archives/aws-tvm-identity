@@ -1,0 +1,7 @@
+{"Statement":
+    [
+        {"Effect":"Allow","Action":["s3:*", "sdb:*", "sqs:*", "sns:*"],"Resource":"*"},
+        {"Effect":"Deny","Action":"sdb:*","Resource":["arn:aws:sdb:__REGION__:__ACCOUNT_ID__:domain/__USERS_DOMAIN__","arn:aws:sdb:__REGION__:__ACCOUNT_ID__:domain/__DEVICE_DOMAIN__"]},
+        {"Effect":"Deny","Action":"iam:*","Resource":"*"}
+    ]
+}
