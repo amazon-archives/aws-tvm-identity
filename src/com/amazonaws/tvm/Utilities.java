@@ -142,7 +142,7 @@ public class Utilities {
 		char c = 0;
 		for ( int i = 0; i < length; i++ ) {
 			c = username.charAt( i );
-			if ( !Character.isLetterOrDigit( c ) && '_' != c && '.' != c ) {
+			if ( !Character.isLetterOrDigit( c ) && '_' != c && '.' != c && '@' != c ) {
 				return false;
 			}
 		}

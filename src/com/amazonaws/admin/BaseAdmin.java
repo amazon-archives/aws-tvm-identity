@@ -18,8 +18,8 @@ import com.amazonaws.tvm.MissingParameterException;
 
 public class BaseAdmin {
 	
-	protected final static String AWSAccessKeyID = "AWSAccessKeyID";	
-	protected final static String AWSSecretKey = "AWSSecretKey";
+	protected final static String AWSAccessKeyID = "AWS_ACCESS_KEY_ID";	
+	protected final static String AWSSecretKey = "AWS_SECRET_KEY";
 	
 	protected AmazonSimpleDBClient sdb;
 	

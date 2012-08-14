@@ -342,5 +342,35 @@ public class UserAuthentication {
 		List<Attribute> data = this.sdb.getAttributes( gar ).getAttributes();
 		return ( data != null && !data.isEmpty() );
 	}
-	
+    
+    
+	/**
+	 * This method returns the username associated with the given uid.
+	 * 
+	 * @param uid
+	 *            Unique device identifier
+	 * @return  the username linked to the devide id, null if no uid found.
+	 */
+    public static String getUsernameFromUID( String uid ) {
+		AmazonSimpleDBClient sdbClient = new AmazonSimpleDBClient( new BasicAWSCredentials( Configuration.AWS_ACCESS_KEY_ID, Configuration.AWS_SECRET_KEY ) );
+		sdbClient.setEndpoint( Configuration.SIMPLEDB_ENDPOINT );
+
+		SelectRequest sr = new SelectRequest( "select * from `" + IDENTITY_DOMAIN + "` WHERE " + USER_ID + " = '" + uid + "'", Boolean.TRUE );
+		SelectResult result = sdbClient.select( sr );
+
+        if ( result.getItems().size() == 0  ) {
+			log.log( Level.SEVERE, "No username matched for UID [" + uid + "]" );     
+            return null;                      
+        }
+        else {
+            if ( result.getItems().size() != 1  ) {
+			    log.log( Level.SEVERE, "More than one username matched." );                               
+    		    for ( Item item : result.getItems() ) {
+	    		    log.log( Level.WARNING, "\tMatched: " + item.getName() );
+		        }
+            }
+            
+            return result.getItems().get( 0 ).getName();
+        }                                
+    }	
 }

@@ -87,11 +87,16 @@ public class IdentityTokenVendingMachine {
 	 * @throws Exception
 	 */
 	public String getToken( String uid ) throws Exception {
-		
 		DeviceAuthentication auth = new DeviceAuthentication();
 		String key = auth.getKey( uid );
 		
-		Credentials sessionCredentials = TemporaryCredentialManagement.getTemporaryCredentials( uid );
+        String username = UserAuthentication.getUsernameFromUID( auth.getUserId( uid ) );
+        if ( username == null ) {
+            log.severe( "Username not found for: " + username );            
+            return null;
+        }
+                
+		Credentials sessionCredentials = TemporaryCredentialManagement.getTemporaryCredentials( username );
 		// if unable to create session credentials then return HTTP 500 error code
 		if ( sessionCredentials == null ) {
 			return null;
@@ -112,7 +117,7 @@ public class IdentityTokenVendingMachine {
 	 * Allows users to register with Token Vending Machine (TVM). This function is useful in Identity mode
 	 * 
 	 * @param username
-	 *            Unique alphanumeric string of length between 3 to 128 characters with special characters limited to underscore (_) and period (.)
+	 *            Unique alphanumeric string of length between 3 to 128 characters with special characters limited to underscore (_), period (.) and (@).
 	 * @param password
 	 *            String of length between 6 to 128 characters
 	 * @param endpoint

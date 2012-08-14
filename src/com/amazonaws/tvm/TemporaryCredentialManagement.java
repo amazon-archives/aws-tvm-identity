@@ -39,7 +39,7 @@ public class TemporaryCredentialManagement {
 				
 				GetFederationTokenRequest getFederationTokenRequest = new GetFederationTokenRequest();
 				getFederationTokenRequest.setName( username );
-				getFederationTokenRequest.setPolicy( TemporaryCredentialManagement.getPolicyObject() );
+				getFederationTokenRequest.setPolicy( TemporaryCredentialManagement.getPolicyObject( username ) );
 				getFederationTokenRequest.setDurationSeconds( new Integer( Configuration.SESSION_DURATION ) );
 				
 				GetFederationTokenResult getFederationTokenResult = sts.getFederationToken( getFederationTokenRequest );
@@ -52,9 +52,15 @@ public class TemporaryCredentialManagement {
 		}
 	}
 	
-	protected static String getPolicyObject() {
-		return Utilities.getRawPolicyFile().replaceAll( "__REGION__", Configuration.SIMPLEDB_REGION ).replaceAll( "__ACCOUNT_ID__", Configuration.AWS_ACCOUNT_ID )
-				.replaceAll( "__USERS_DOMAIN__", Configuration.USERS_DOMAIN ).replaceAll( "__DEVICE_DOMAIN__", Configuration.DEVICE_DOMAIN );
+	protected static String getPolicyObject( String username ) throws Exception {
+        // Ensure the username is valid to prevent injection attacks.
+        if ( !Utilities.isValidUsername( username ) ) {
+            throw new Exception( "Invalid Username" );
+        }
+        else {
+    		return Utilities.getRawPolicyFile().replaceAll( "__USERNAME__", username ).replaceAll( "__REGION__", Configuration.SIMPLEDB_REGION ).replaceAll( "__ACCOUNT_ID__", Configuration.AWS_ACCOUNT_ID )
+	    			.replaceAll( "__USERS_DOMAIN__", Configuration.USERS_DOMAIN ).replaceAll( "__DEVICE_DOMAIN__", Configuration.DEVICE_DOMAIN );
+        }
 	}
 	
 }
