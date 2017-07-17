@@ -1,3 +1,12 @@
+ARCHIVED
+--------
+
+AWS has released Amazon Cognito. In many cases Amazon Cognito will replace the use of a Token Vending Machine. 
+
+Please consider using Amazon Cognito in place of a TVM. 
+
+---
+
 Identity TVM
 ------------
 This is a sample reference application for running a service that distributes temporary credentials to client applications.
